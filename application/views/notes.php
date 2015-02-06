@@ -12,43 +12,40 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script>
-		$(document).ready(function(){
-			alert('working');
-			$.ajax({
+			$(document).ready(function(){
+				// alert('working');
+				$.ajax({
 					url: '/notes/getpost/',
 					data: " ",
 					dataType: 'json',
 					success: function(go){
 					// console.log(go);
-					console.log(go);
+					// console.log(go);
 					for (var i=0;i<go.length;i++){
 						$("#posts").append("<div class='col-xs-6 col-sm-4 boxes'>" + go[i].post + "</div>")
+						}
 					}
-				}
+				});
+				$('form').submit(function(){
+					var formdata = $("form").serialize();
+					$.ajax({
+						type: 'post',
+						url: '/notes/post/',
+						data: formdata,
+						datatype: 'json',
+						success: function(go){
+							// console.log(go);
+						var obj = jQuery.parseJSON(go);
+						console.log(obj);
+						i=obj.length-1; {
+						$("#posts").append("<div class='col-xs-6 col-sm-4 boxes'>" + obj[i].post + "</div>")
+							}
+						}
+					});
+					return false;
+				});
 			});
-		});
-			// $('form').submit(function(){
-			// 	var formdata = $("form").serialize();
-			// 	$.ajax({
-			// 		type: 'post',
-			// 		url: '/notes/post/',
-			// 		data: formdata,
-			// 		datatype: 'json',
-			// 		success: function(go){
-			// 			// console.log(go);
-			// 		var obj = jQuery.parseJSON(go);
-			// 		console.log(obj);
-			// 		for (i=counter;counter<obj.length;i++){
-			// 		$("#posts").append("<div class='col-xs-6 col-sm-4 boxes'>" + obj[i].post + "</div>")
-			// 		var counter=i;
-			// 			}
-			// 		}
-			// 	});
-			// 	return false;
-			
 		</script>
-
-
 		<style type="text/css">
 		.boxes {
 			border: 1px solid black;
@@ -60,9 +57,10 @@
 			height:250px;
 			font-family: "Comic Sans MS", cursive, sans-serif;
 			font-size: 1.2em;
+			margin-top: 30px;
 		}
 
-		#notes {
+		#note {
 			margin-top: 100px;
 		}
 
@@ -91,7 +89,6 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-8">
 				<form class="form-horizontal">
-					 
 					    <label for="inputEmail3" class="col-sm-2 control-label">Add new note</label>
 					    <div class="col-sm-10">
 					      <textarea class="form-control" id="note" name="noteinput"></textarea>
@@ -101,10 +98,8 @@
 					      <button type="submit" class="btn btn-success btn-lg">Post New Note</button>
 					      <input type="hidden" name="notepost" value="postit">
 					  </div>
-</form>
+				</form>
 			</div>
-
-
 		</div>
 	</div>
 </body>
